@@ -1,7 +1,20 @@
 import { Canvas } from '@react-three/fiber'
 import { Suspense } from 'react'
 import Loader from '../components/Loader'
+import Island from '../models/Island'
+import { Vector3 } from 'three'
+
 const Home: React.FC = () => {
+  const adjustIslandForScreenSize = () => {
+    let screenScale: Vector3 = new Vector3(1, 1, 1)
+    let screenPosition: Vector3 = new Vector3(0, -6.5, -43)
+    if (window.innerWidth < 768) {
+      screenScale.set(0.9, 0.9, 0.9)
+    }
+    return { screenScale, screenPosition }
+  }
+
+  const { screenScale, screenPosition } = adjustIslandForScreenSize()
   return (
     <section className="w-full h-screen relative">
       <Canvas
@@ -14,6 +27,7 @@ const Home: React.FC = () => {
           <pointLight />
           <spotLight />
           <hemisphereLight />
+          <Island position={screenPosition} scale={screenScale} />
         </Suspense>
       </Canvas>
     </section>
@@ -21,10 +35,3 @@ const Home: React.FC = () => {
 }
 
 export default Home
-
-{
-  /* <div
-  className="absolute top-28 left-0 right-0 z-10 flex
-items-center justify-center"
-></div> */
-}

@@ -11,6 +11,7 @@
     "prettier": "prettier --write ."
   },
   "dependencies": {
+    "@react-spring/three": "^9.7.3",
     "@react-three/drei": "^9.89.0",
     "@react-three/fiber": "^8.15.11",
     "@types/three": "^0.159.0",
