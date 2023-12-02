@@ -2,9 +2,10 @@ import { useEffect, useRef } from 'react'
 import { useGLTF, useAnimations } from '@react-three/drei'
 // @ts-ignore
 import planeScene from '../assets/3d/plane.glb'
+import { IPlane } from '../types'
 
 // 3D Model from: https://sketchfab.com/3d-models/stylized-ww1-plane-c4edeb0e410f46e8a4db320879f0a1db
-const Plane: React.FC = ({ isRotating, ...props }) => {
+const Plane: React.FC<IPlane> = ({ isRotating, ...props }) => {
   const ref = useRef()
   // Load the 3D model and its animations
   const { scene, animations } = useGLTF(planeScene)
