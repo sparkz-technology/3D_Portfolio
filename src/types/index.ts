@@ -1,6 +1,5 @@
-import { Vector3 } from 'three'
-
 export type IIsland = {
-  position: Vector3
-  scale: Vector3
+  position: number[] | any
+  scale: number[] | any
+  rotation: number[] | any
 }
