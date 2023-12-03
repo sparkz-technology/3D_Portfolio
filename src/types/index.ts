@@ -14,3 +14,7 @@ export type IPlane = {
   isRotating: boolean
   setIsRotating: (isRotating: boolean) => void
 }
+
+export type IHomeInfo = {
+  currentStage: number
+}

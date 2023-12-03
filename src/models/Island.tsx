@@ -27,24 +27,39 @@ const Island: React.FC<IIsland> = ({
   const lastX = useRef(0)
   const rotationSpeed = useRef(0)
   const dampingFactor = 0.95
+  // Handle pointer (mouse or touch) down event
   const handlePointerDown = (e: any) => {
-    e.stopPropagation().preventDefault()
+    e.stopPropagation()
+    e.preventDefault()
     setIsRotating(true)
+    // Calculate the clientX based on whether it's a touch event or a mouse event
     const clientX = e.touches ? e.touches[0].clientX : e.clientX
+    // Store the current clientX position for reference
     lastX.current = clientX
   }
+  // Handle pointer (mouse or touch) up event
   const handlePointerUp = (e: any) => {
-    e.stopPropagation().preventDefault()
+    e.stopPropagation()
+    e.preventDefault()
     setIsRotating(false)
-    const clientX = e.touches ? e.touches[0].clientX : e.clientX
-    const delta = (clientX - lastX.current) / viewport.width
-    isLandRef.current.rotation.y += delta * Math.PI * 0.01
-    lastX.current = clientX
-    rotationSpeed.current = delta * Math.PI * 0.01
   }
+  // Handle pointer (mouse or touch) move event
   const handlePointerMove = (e: any) => {
-    e.stopPropagation().preventDefault()
-    if (isRotating) handlePointerUp(e)
+    e.stopPropagation()
+    e.preventDefault()
+    if (isRotating) {
+      // If rotation is enabled, calculate the change in clientX position
+      const clientX = e.touches ? e.touches[0].clientX : e.clientX
+      // calculate the change in the horizontal position of the mouse cursor or touch input,
+      // relative to the viewport's width
+      const delta = (clientX - lastX.current) / viewport.width
+      // Update the island's rotation based on the mouse/touch movement
+      isLandRef.current.rotation.y += delta * 0.01 * Math.PI
+      // Update the reference for the last clientX position
+      lastX.current = clientX
+      // Update the rotation speed
+      rotationSpeed.current = delta * 0.01 * Math.PI
+    }
   }
   const handleKeyDown = (e: any) => {
     if (e.key === 'ArrowLeft') {

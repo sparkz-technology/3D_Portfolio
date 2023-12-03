@@ -3,6 +3,7 @@ import { Suspense, useState } from 'react'
 
 import Loader from '../components/Loader'
 import { Bird, Island, Plane, Sky } from '../models'
+import HomeInfo from '../components/HomeInfo'
 
 const Home: React.FC = () => {
   const [isRotating, setIsRotating] = useState(false)
@@ -13,8 +14,13 @@ const Home: React.FC = () => {
     let screenPosition: number[] = [0, -6.5, -43]
     let screenRotation: number[] = [0.1, 4.7, 0]
     if (window.innerWidth < 768) {
-      screenScale = [0.5, 0.5, 0.5]
+      screenScale = [0.9, 0.9, 0.9]
+      screenPosition = [0, -6.5, -43.4]
+    } else {
+      screenScale = [1, 1, 1]
+      screenPosition = [0, -6.5, -43.4]
     }
+
     return { screenScale, screenPosition, screenRotation }
   }
 
@@ -37,6 +43,10 @@ const Home: React.FC = () => {
   const { planeScale, planePosition } = adjustPlaneForScreenSize()
   return (
     <section className="w-full h-screen relative">
+      <div className="absolute top-28 left-0 right-0 z-10 flex items-center justify-center">
+        {currentStage && <HomeInfo currentStage={currentStage} />}
+      </div>
+
       <Canvas
         className={`w-full h-screen bg-transparent ${
           isRotating ? 'cursor-grabbing' : 'cursor-grab'

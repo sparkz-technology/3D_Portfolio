@@ -21,9 +21,6 @@ module.exports = {
       {
         singleQuote: true,
         semi: false,
-        arrowParens: 'always',
-        bracketSpacing: true,
-        jsxBracketSameLine: true,
       },
     ],
   },
