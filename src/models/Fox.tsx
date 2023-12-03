@@ -11,13 +11,22 @@
 
 import { useRef, useEffect } from 'react'
 import { useGLTF, useAnimations } from '@react-three/drei'
-// @ts-ignore
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-expect-error
 import scene from '../assets/3d/fox.glb'
+import { Group, Vector3 } from 'three'
+
+type FoxProps = {
+  currentAnimation: string
+  position?: Vector3 | [number, number, number] | undefined // Update this line
+  rotation: [number, number, number]
+  scale: [number, number, number]
+}
 
 // 3D Model from: https://sketchfab.com/3d-models/fox-f372c04de44640fbb6a4f9e4e5845c78
 
-const Fox: React.FC = ({ currentAnimation, ...props }) => {
-  const group = useRef()
+const Fox: React.FC<FoxProps> = ({ currentAnimation, ...props }) => {
+  const group = useRef<Group>(null)
   const { nodes, materials, animations } = useGLTF(scene)
   const { actions } = useAnimations(animations, group)
 
@@ -31,7 +40,7 @@ const Fox: React.FC = ({ currentAnimation, ...props }) => {
   }, [actions, currentAnimation])
 
   return (
-    <group ref={group as any} {...props} dispose={null}>
+    <group ref={group} {...props} dispose={null}>
       <group name="Sketchfab_Scene">
         <primitive object={nodes.GLTF_created_0_rootJoint} />
         <skinnedMesh

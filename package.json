@@ -11,6 +11,7 @@
     "prettier": "prettier --write ."
   },
   "dependencies": {
+    "@emailjs/browser": "^3.11.0",
     "@react-spring/three": "^9.7.3",
     "@react-three/drei": "^9.89.0",
     "@react-three/fiber": "^8.15.11",
