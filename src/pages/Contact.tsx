@@ -6,6 +6,7 @@ import { Fox } from '../models'
 import useAlert from '../hooks/useAlert'
 import Alert from '../components/Alert'
 import Loader from '../components/Loader'
+import { config } from '../config'
 
 const Contact: React.FC = () => {
   const formRef = useRef<HTMLFormElement | null>(null)
@@ -36,8 +37,8 @@ const Contact: React.FC = () => {
 
     emailjs
       .send(
-        import.meta.env.VITE_APP_EMAILJS_SERVICE_ID,
-        import.meta.env.VITE_APP_EMAILJS_TEMPLATE_ID,
+        config.EMAILJS_SERVICE_ID,
+        config.EMAILJS_TEMPLATE_ID,
         {
           from_name: form.name,
           to_name: 'Sutharsan',
@@ -45,7 +46,7 @@ const Contact: React.FC = () => {
           to_email: 'sutharsanspar@gmail.com',
           message: form.message,
         },
-        import.meta.env.VITE_APP_EMAILJS_PUBLIC_KEY,
+        config.EMAILJS_PUBLIC_KEY,
       )
       .then(
         () => {
