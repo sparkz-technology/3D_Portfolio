@@ -8,10 +8,11 @@ Title: Fox's islands
 
 import { useGLTF } from '@react-three/drei'
 import { a } from '@react-spring/three'
+
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import isLandScene from '../assets/3d/island.glb'
-import { useCallback, useEffect, useRef } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { IIsland } from '../types'
 import { useFrame, useThree } from '@react-three/fiber'
 import { Group, Object3DEventMap } from 'three'
@@ -23,6 +24,10 @@ const Island: React.FC<IIsland> = ({
   ...props
 }) => {
   const { nodes, materials } = useGLTF(isLandScene)
+  const [touchStart, setTouchStart] = useState(false)
+  const [lastTouchPosition, setLastTouchPosition] = useState<number | null>(
+    null,
+  )
 
   const isLandRef = useRef<Group<Object3DEventMap> | null>(null)
 
@@ -177,6 +182,46 @@ const Island: React.FC<IIsland> = ({
     handleKeyUp,
   ])
 
+  const handleTouchStart = useCallback((e: TouchEvent) => {
+    setTouchStart(true)
+    setLastTouchPosition(e.touches[0].clientX)
+  }, [])
+
+  const handleTouchEnd = useCallback(() => {
+    setTouchStart(false)
+    setIsRotating(false)
+  }, [setIsRotating])
+
+  const handleTouchMove = useCallback(
+    (e: TouchEvent) => {
+      if (!touchStart) return
+      const clientX = e.touches[0].clientX
+      const delta = (clientX - lastTouchPosition!) / viewport.width
+      if (!isLandRef.current) return
+      isLandRef.current.rotation.y += delta * 0.01 * Math.PI
+      setLastTouchPosition(clientX)
+      rotationSpeed.current = delta * 0.01 * Math.PI
+    },
+    [touchStart, lastTouchPosition, viewport.width],
+  )
+
+  useEffect(() => {
+    window.addEventListener('touchstart', handleTouchStart)
+    window.addEventListener('touchend', handleTouchEnd)
+    window.addEventListener('touchmove', handleTouchMove)
+
+    return () => {
+      window.removeEventListener('touchstart', handleTouchStart)
+      window.removeEventListener('touchend', handleTouchEnd)
+      window.removeEventListener('touchmove', handleTouchMove)
+    }
+  }, [
+    handleTouchStart,
+    handleTouchEnd,
+    handleTouchMove,
+    isLandRef,
+    viewport.width,
+  ])
   return (
     <a.group {...props} ref={isLandRef}>
       <mesh
