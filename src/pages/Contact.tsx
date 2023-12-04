@@ -48,37 +48,35 @@ const Contact: React.FC = () => {
         },
         config.EMAILJS_PUBLIC_KEY,
       )
-      .then(
-        () => {
-          setLoading(false)
-          showAlert({
-            show: true,
-            text: 'Thank you for your message 😃',
-            type: 'success',
-          })
+      .then(() => {
+        setLoading(false)
+        showAlert({
+          show: true,
+          text: 'Thank you for your message 😃',
+          type: 'success',
+        })
 
-          setTimeout(() => {
-            hideAlert()
-            setCurrentAnimation('idle')
-            setForm({
-              name: '',
-              email: '',
-              message: '',
-            })
-          }, 3000)
-        },
-        (error: Error) => {
-          setLoading(false)
-          console.error(error)
+        setTimeout(() => {
+          hideAlert()
           setCurrentAnimation('idle')
-
-          showAlert({
-            show: true,
-            text: "I didn't receive your message 😢",
-            type: 'danger',
+          setForm({
+            name: '',
+            email: '',
+            message: '',
           })
-        },
-      )
+        }, 3000)
+      })
+      .catch((error: Error) => {
+        setLoading(false)
+        console.error(error)
+        setCurrentAnimation('idle')
+
+        showAlert({
+          show: true,
+          text: "I didn't receive your message 😢",
+          type: 'danger',
+        })
+      })
   }
 
   return (

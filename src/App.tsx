@@ -16,7 +16,7 @@ const App: React.FC = () => {
   ])
 
   return (
-    <main className="bg-slate-300/20">
+    <main className="bg-slate-300/20 ">
       <RouterProvider router={routes} />
     </main>
   )
